@@ -6,6 +6,7 @@
       #cloud.terraform.terraform:
         project_path: 'terraform/'
         state: present
+        force_init: yes
 
     - name: Update inventory
       ansible.builtin.meta: refresh_inventory
@@ -14,7 +15,6 @@
   remote_user: ec2-user
   become: yes
   gather_facts: no
-  force_init: yes
 
   tasks:
     - name: Wait for SSH connection
