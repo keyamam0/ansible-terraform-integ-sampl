@@ -1,0 +1,25 @@
+version: 1
+ 
+build_arg_defaults:
+  EE_BASE_IMAGE: registry.redhat.io/ansible-automation-platform-23/ee-supported-rhel8:latest
+ 
+ansible_config: ansible.cfg
+ 
+dependencies:
+  galaxy: requirements.yml
+  python: requirements.txt
+  system: bindep.txt
+ 
+additional_build_steps:
+  prepend:
+    - RUN whoami
+    - RUN cat /etc/os-release
+  append:
+    - RUN echo This is a post-install command!
+    - RUN ls -la /etc
+    - |
+      RUN curl -LO https://releases.hashicorp.com/terraform/1.4.6/terraform_1.4.6_linux_amd64.zip \
+      && unzip terraform_1.4.6_linux_amd64.zip \
+      && rm terraform_1.4.6_linux_amd64.zip \
+      && mv terraform /usr/local/sbin/ \
+      && terraform -v

@@ -1,0 +1,36 @@
+- hosts: localhost
+
+  tasks:
+    - name: Run Terraform
+      community.general.terraform:
+      #cloud.terraform.terraform:
+        project_path: 'terraform/'
+        state: present
+
+    - name: Update inventory
+      ansible.builtin.meta: refresh_inventory
+      
+- hosts: tag_myGroup_ansible
+  remote_user: ec2-user
+  become: yes
+  gather_facts: no
+  force_init: yes
+
+  tasks:
+    - name: Wait for SSH connection
+      ansible.builtin.wait_for_connection:
+
+    - name: Gather fact
+      ansible.builtin.setup:
+
+    - name: Install httpd
+      # ansible.builtin.yum: ← ansible.builtin.yumはpython3だと動作しない、ansible.builtin.dnfに変更
+      ansible.builtin.dnf:
+        name: httpd
+        state: present
+
+    - name: Launch httpd
+      ansible.builtin.systemd:
+        name: httpd.service
+        enabled: yes
+        state: started
