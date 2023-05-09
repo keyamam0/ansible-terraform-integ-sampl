@@ -4,7 +4,7 @@
 |  ファイル／フォルダ  |    | 説明 |
 | ---- | ---- | --- |
 |  iac_aws.yml  |  Ansible Playbook  | このPlaybookでIaC全体を統合的に実行 |
-|  inventory-source_aws_ec2.yml  | Ansible Inventory Sorce  | Terraformで作成したEC2の情報を動的に吸い出すダイナミックインベントリのコード |
+|  inventory-source_aws_ec2.yml  | Ansible Inventory Sorce  | Terraformで作成したEC2の情報を動的に吸い出すダイナミックインベントリのコード(Ansible Controlleの場合使わない) |
 |  terraform  |  Terraform Script  | Terraform Scriptは、上記のPlaybookから起動。単独で動かす場合は、terraform init->apply |
 |  ee-build  |  EEのビルド素材  | Ansible Towerで実行する時に必要。Terraform入りのEEコンテナをビルドするためのファイル、ベースコンテナにRHELを使っているので、ビルド環境にRHELサブスクが必要です |
 
