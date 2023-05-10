@@ -7,7 +7,7 @@
 
 なお、**Ansibleコマンドから実行する方法**と、**Ansible Controller（旧Ansible Tower）から実行する方法**の２つの方法を後述しています
 
-## ◯統合メリット（所感）
+## 統合メリット（所感）
 
 - TerraformとAnsibleの得意な部分を、シームレスに組み合わせて活用できる
 
@@ -17,14 +17,14 @@
 
 - (もうちょっと、実用的なユースケースまで、落としたいところ)
 
-## ◯要改善memo
+## 要改善memo
 - 現状、tfstateファイルをローカルに置いていて、Ansible ControllerからEEコンテナで動かす場合には消えちゃう問題あり。S3とかにリモート保存するように修正しなくちゃなぁ（差分ApplyやDestroyが効かないのは大きな問題だ）
 
 - Webhook使ったGitOps化などはユースケースあるかなぁ、、
 
 - TerraformをAnsibleから叩くCollectionモジュールは、Community版を使っています。商用版モジュールにも移行してみたい
 
-## ◯ファイル一覧
+## ファイル一覧
 |  ファイル／フォルダ  |    | 説明 |
 | ---- | ---- | --- |
 |  iac_aws.yml  |  Ansible Playbook  | 【Ansibleコマンドから実行時に使用】このPlaybookでTerraform処理〜Inventory更新〜Ansible処理までIaC全体を一括実行 |
@@ -35,17 +35,17 @@
 |  ee-build  |  EEコンテナのビルド素材  | Ansible Towerで実行する時に必要。Terraform入りのEEコンテナをビルドするためのファイル、ベースコンテナにRHELを使っているので、ビルド環境にRHELサブスクが必要です |
 
 
-## ◯Ansibleコマンドから実行する場合
+## Ansibleコマンドから実行する場合
 
 事前にAWSプロファイルの作成、EC2のSSH keypair(下のコマンドでは../my-keypair-tmp.pemで設定)を用意しておく
 ```
 ansible-playbook -i inventory-source_aws_ec2.yml iac_aws.yml --private-key="../my-keypair-tmp.pem" --ssh-extra-args="-o 'StrictHostKeyChecking=no'"
 ```
 
-## ◯Ansible Controller(GUI、旧Ansible Tower)から実行する場合
+## Ansible Controller(GUI、旧Ansible Tower)から実行する場合
 
 
-### 事前準備① EEのビルドと設定
+### 1.事前準備① EEのビルドと設定
 Terraform、Unzip、必要なCollectionなどデフォルトで入っていないモジュール入りのAnsible EEコンテナをビルドして、quey.ioなどのコンテナリポジトリに置いておく
 
 @作業端末、EEコンテナのビルドツールをインストール
@@ -72,7 +72,7 @@ iac_aws_p1.ymlを実行するTemplateの実行環境には、この**ee-terrafor
 
 (商用のAnsible（AAP)を使っているため、BaseImageはRHEL8ベースのものを使っていますが、Community版のAnsible AWXで使っているCentOSかなにかのベースイメージを使っても良いと思います)
 
-### 事前準備② 認証情報の設定（２個）
+### 2.事前準備② 認証情報の設定（２個）
 設定するのはAWSのアクセスキー／シークレットアクセスキーと、EC2用キーペアの2個
 
 @Ansible Controller、リソース-認証情報から新規認証情報を追加
@@ -88,7 +88,7 @@ iac_aws_p1.ymlを実行するTemplateの実行環境には、この**ee-terrafor
 - 認証情報タイプ: Machine
 - SSH秘密鍵: EC2のKeypairファイルをアップロード(Terraformでプロビジョニングする時に指定したKeypair)
 
-### 事前準備③ AWS EC2用動的インベントリの設定
+### 3.事前準備③ AWS EC2用動的インベントリの設定
 
 @Ansible Controller、リソース-インベントリーから新規インベントリーを追加
 - 名前: 任意(ここでは**ec2-inventory**と仮に設定)
@@ -109,14 +109,15 @@ keyed_groups:
 
 (↑起動時の更新オプションが、Ansible-playbookから実行する場合のansible.builtin.meta: refresh_inventory代わりとなり、Terraformで作ったEC2がインベントリに反映されて、後続のAnsible処理で使えるようになる)
 
-### 事前準備④ Projectの設定（コード置き場）
+### 4.事前準備④ Projectの設定（コード置き場）
+AnsibleもTerraformも１つのGitリポジトリに放り込むスタイル
 
 @Ansible Controller、リソース-プロジェクトから新規プロジェクトを追加
 名前: 任意(ここでは**ansible-terraform-project**と仮に設定)
 ソースコントロールのタイプ: Git
 ソースコントロールのURL: 本Gitリポジトリ
 
-### 事前準備⑤ Templateの設定（Playbookジョブ、前述の通り2パート構成なので2個、ワークフローで統合）
+### 5.事前準備⑤ Templateの設定（Playbookジョブ、前述の通り2パート構成なので2個、ワークフローで統合）
 
 @Ansible Controller、リソース-テンプレートから新規ジョブテンプレートを追加
 - ジョブタイプ: 実行 
@@ -134,7 +135,7 @@ keyed_groups:
 - Playbook: iac_aws_p2.yml
 - 認証情報: **ec2-keypair(仮)**
 
-### いよいよ処理実行
+### 6.いよいよ処理実行
 設定したテンプレート２つを順番に実行すると、TerraformでEC2が作成されて、Ansibleでモジュールインストール＆設定処理が行われます
 
 処理対象のEC2サーバーリストはダイナミックインベントリでシームレスに連携されます
