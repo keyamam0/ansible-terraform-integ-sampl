@@ -3,7 +3,7 @@
 
 この方法で、例えば、クラウドリソースを作成するためのTerraformの処理と、サーバーへのモジュールのインストールや設定処理を**一連の流れ**として実行できます
 
-具体的な処理内容としては、TerraformでAWS EC2を作成し、AnsibleでHTTPDのインストールと起動をしているのみとなっております
+具体的な処理内容としては、TerraformでAWS EC2を作成し、AnsibleでHTTPDのインストールと起動するものとなっています
 
 なお、**Ansibleコマンドから実行する方法**と、**Ansible Controller（旧Ansible Tower）から実行する方法**の２つの方法を後述しています
 
@@ -38,7 +38,7 @@
 ## Ansibleコマンドから実行する場合
 
 事前にAWSプロファイルの作成、EC2のSSH keypair(下のコマンドでは../my-keypair-tmp.pemで設定)を用意しておく
-```
+```terminal
 ansible-playbook -i inventory-source_aws_ec2.yml iac_aws.yml --private-key="../my-keypair-tmp.pem" --ssh-extra-args="-o 'StrictHostKeyChecking=no'"
 ```
 
@@ -49,11 +49,11 @@ ansible-playbook -i inventory-source_aws_ec2.yml iac_aws.yml --private-key="../m
 Terraform、Unzip、必要なCollectionなどデフォルトで入っていないモジュール入りのAnsible EEコンテナをビルドして、quey.ioなどのコンテナリポジトリに置いておく
 
 @作業端末、EEコンテナのビルドツールをインストール
-```
+```terminal
 sudo python3.9 -m pip install ansible-builder
 ```
 @作業端末、ee-buildディレクトリでコンテナBuild
-```
+```terminal
 ansible-builder build
 ```
 
