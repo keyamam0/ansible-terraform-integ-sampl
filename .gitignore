@@ -1,0 +1,4 @@
+.*
+*.tfstate*
+*.lock.hcl
+context
