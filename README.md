@@ -1,4 +1,4 @@
-# Ansible-Terraform-インテグレーションサンプル（Ansible軸）
+# Ansible&Terraform インテグレーションSample
 このサンプルは、AnsibleからTerraformスクリプトとAnsibleプレイブックを統合して実行する方法を示しています
 
 この方法で、例えば、クラウドリソースを作成するためのTerraformの処理と、サーバーへのモジュールのインストールや設定処理を**一連の流れ**として実行できます
@@ -27,12 +27,12 @@
 ## ◯ファイル一覧
 |  ファイル／フォルダ  |    | 説明 |
 | ---- | ---- | --- |
-|  iac_aws.yml  |  Ansible Playbook  | 【Ansibleコマンドから実行時のみ】このPlaybookでTerraform処理〜Inventory更新〜Ansible処理までIaC全体を一括実行 |
-|  inventory-source_aws_ec2.yml  | Ansible Inventory Sorce  | 【Ansibleコマンドから実行時のみ】Terraformで作成したEC2の情報を動的に吸い出すダイナミックインベントリのコード(Ansible Controllerから実行時は、GUIによる設定を使う) |
-|  iac_aws-p1.yml  |  Ansible Playbook  | 【Ansible Controllerから実行時のみ】このPlaybookでTerraform処理を実施する **※Ansible Controllerから実行時は、コードでInventory更新が出来ないので、2Partに分けて、ワークフローでp1とp2を一連の処理に統合** |
-|  iac_aws-p2.yml  |  Ansible Playbook  | 【Ansible Controllerから実行時のみ】このPlaybookでTerraform処理で作成したEC2への設定を行う、Inventoryはタスク起動時に更新されるように設定しておくこと |
+|  iac_aws.yml  |  Ansible Playbook  | 【Ansibleコマンドから実行時に使用】このPlaybookでTerraform処理〜Inventory更新〜Ansible処理までIaC全体を一括実行 |
+|  inventory-source_aws_ec2.yml  | Ansible Inventory Sorce  | 【Ansibleコマンドから実行時に使用】Terraformで作成したEC2の情報を動的に吸い出すダイナミックインベントリのコード(Ansible Controllerから実行時は、GUIによる設定を使う) |
+|  iac_aws-p1.yml  |  Ansible Playbook  | 【Ansible Controllerから実行時に使用】このPlaybookでTerraform処理を実施する **※Ansible Controllerから実行時は、コードでInventory更新が出来ないので、2Partに分けて、ワークフローテンプレートでp1とp2を一連の処理に統合** |
+|  iac_aws-p2.yml  |  Ansible Playbook  | 【Ansible Controllerから実行時に使用】このPlaybookでTerraform処理で作成したEC2への設定を行う、Inventoryはタスク起動時に更新されるように設定しておくこと |
 |  terraform  |  Terraform Script  | Terraform Scriptは、上記のAnsibleから起動。単独で動かす場合は、terraform init->applyで実施 |
-|  ee-build  |  EEのビルド素材  | Ansible Towerで実行する時に必要。Terraform入りのEEコンテナをビルドするためのファイル、ベースコンテナにRHELを使っているので、ビルド環境にRHELサブスクが必要です |
+|  ee-build  |  EEコンテナのビルド素材  | Ansible Towerで実行する時に必要。Terraform入りのEEコンテナをビルドするためのファイル、ベースコンテナにRHELを使っているので、ビルド環境にRHELサブスクが必要です |
 
 
 ## ◯Ansibleコマンドから実行する場合
