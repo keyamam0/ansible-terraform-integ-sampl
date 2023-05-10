@@ -38,7 +38,7 @@
 ## Ansibleコマンドから実行する場合
 
 事前にAWSプロファイルの作成、EC2のSSH keypair(下のコマンドでは../my-keypair-tmp.pemで設定)を用意しておく
-```terminal
+```bash
 ansible-playbook -i inventory-source_aws_ec2.yml iac_aws.yml --private-key="../my-keypair-tmp.pem" --ssh-extra-args="-o 'StrictHostKeyChecking=no'"
 ```
 
@@ -49,16 +49,16 @@ ansible-playbook -i inventory-source_aws_ec2.yml iac_aws.yml --private-key="../m
 Terraform、Unzip、必要なCollectionなどデフォルトで入っていないモジュール入りのAnsible EEコンテナをビルドして、quey.ioなどのコンテナリポジトリに置いておく
 
 @作業端末、EEコンテナのビルドツールをインストール
-```terminal
+```bash
 sudo python3.9 -m pip install ansible-builder
 ```
 @作業端末、ee-buildディレクトリでコンテナBuild
-```terminal
+```bash
 ansible-builder build
 ```
 
 @作業端末、出来たコンテナイメージをレジストリ登録（RHELで作業してるのでPodman）
-```
+```bash
 podman login quay.io
 podman tag localhost/ansible-execution-env quay.io/xxx/ee-terraform
 podman push quay.io/xxx/ee-terraform:latest 
@@ -96,7 +96,7 @@ iac_aws_p1.ymlを実行するTemplateの実行環境には、この**ee-terrafor
 一度保存して、ec2-inventoryのソースを新規追加
 - 認証情報: **aws-auth(仮)**
 - 変数:
-```
+```playbook
 ansible_python_interpreter: /usr/bin/python3
 regions:
   - ap-northeast-1
