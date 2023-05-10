@@ -68,7 +68,7 @@ podman push quay.io/xxx/ee-terraform:latest
 - 名前: 任意(ここでは**ee-terraform**と仮に設定)
 - イメージ: レジストリのPath
 
-iac_aws_p1.ymlを実行するTemplateの実行環境には、この**ee-terraform(仮)**を指定してください
+iac_aws_p1.ymlを実行するTemplateの実行環境には、この**ee-terraform**を指定してください
 
 (商用のAnsible（AAP)を使っているため、BaseImageはRHEL8ベースのものを使っていますが、Community版のAnsible AWXで使っているCentOSかなにかのベースイメージを使っても良いと思います)
 
@@ -94,7 +94,7 @@ iac_aws_p1.ymlを実行するTemplateの実行環境には、この**ee-terrafor
 - 名前: 任意(ここでは**ec2-inventory**と仮に設定)
 
 一度保存して、ec2-inventoryのソースを新規追加
-- 認証情報: **aws-auth(仮)**
+- 認証情報: **aws-auth**
 - 変数:
 ```playbook
 ansible_python_interpreter: /usr/bin/python3
@@ -122,18 +122,18 @@ AnsibleもTerraformも１つのGitリポジトリに放り込むスタイル
 @Ansible Controller、リソース-テンプレートから新規ジョブテンプレートを追加
 - ジョブタイプ: 実行 
 - インベントリ: 
-- プロジェクト: **ansible-terraform-project(仮)** 
+- プロジェクト: **ansible-terraform-project** 
 - 実行環境: **ee-terraform**
 - Playbook: iac_aws_p1.yml
-- 認証情報: **aws-auth(仮)**
+- 認証情報: **aws-auth**
 
 @Ansible Controller、リソース-テンプレートから新規ジョブテンプレートを追加
 - ジョブタイプ: 実行
 - インベントリ: **ec2-inventory**
-- プロジェクト: **ansible-terraform-project(仮)**
+- プロジェクト: **ansible-terraform-project**
 - 実行環境: **ee-terraform**
 - Playbook: iac_aws_p2.yml
-- 認証情報: **ec2-keypair(仮)**
+- 認証情報: **ec2-keypair**
 
 ### 6.いよいよ処理実行
 設定したテンプレート２つを順番に実行すると、TerraformでEC2が作成されて、Ansibleでモジュールインストール＆設定処理が行われます
