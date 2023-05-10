@@ -1,9 +1,11 @@
-# ansible-terraform-integ-sampl
-このサンプルは、AnsibleからTerraformスクリプトとAnsibleプレイブックを統合して実行する方法を示しています。
+# Ansible-Terraform-インテグレーションサンプル（Ansible軸）
+このサンプルは、AnsibleからTerraformスクリプトとAnsibleプレイブックを統合して実行する方法を示しています
 
-この方法で、例えば、クラウドリソースを作成するためのTerraformの処理と、サーバーへのモジュールのインストールや設定処理を**一連の流れ**として実行できます。
+この方法で、例えば、クラウドリソースを作成するためのTerraformの処理と、サーバーへのモジュールのインストールや設定処理を**一連の流れ**として実行できます
 
-具体的な処理内容としては、TerraformでAWS EC2を作成し、AnsibleでHTTPDSのインストールと起動をしているだけです。
+具体的な処理内容としては、TerraformでAWS EC2を作成し、AnsibleでHTTPDのインストールと起動をしているのみとなっております
+
+なお、**Ansibleコマンドから実行する方法**と、**Ansible Controller（旧Ansible Tower）から実行する方法**の２つの方法を後述しています
 
 ## ◯統合メリット（所感）
 
@@ -33,14 +35,14 @@
 |  ee-build  |  EEのビルド素材  | Ansible Towerで実行する時に必要。Terraform入りのEEコンテナをビルドするためのファイル、ベースコンテナにRHELを使っているので、ビルド環境にRHELサブスクが必要です |
 
 
-## ◯Ansibleコマンドから実行
+## ◯Ansibleコマンドから実行する場合
 
 事前にAWSプロファイルの作成、EC2のSSH keypair(下のコマンドでは../my-keypair-tmp.pemで設定)を用意しておく
 ```
 ansible-playbook -i inventory-source_aws_ec2.yml iac_aws.yml --private-key="../my-keypair-tmp.pem" --ssh-extra-args="-o 'StrictHostKeyChecking=no'"
 ```
 
-## ◯Ansible Controller(GUI、旧Ansible Tower)から実行
+## ◯Ansible Controller(GUI、旧Ansible Tower)から実行する場合
 
 
 ### 事前準備① EEのビルドと設定
