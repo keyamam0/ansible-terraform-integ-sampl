@@ -86,7 +86,7 @@ iac_aws_p1.ymlを実行するTemplateの実行環境には、この**ee-terrafor
 (Ansible処理がEC2にSSH接続する時(iac_aws_p2.yml)に必要)
 - 名前: 任意(ここでは**ec2-keypair**と仮に設定)
 - 認証情報タイプ: Machine
-- SSH秘密鍵: EC2のKeypairファイルをアップロード(Terraformでプロビジョニングする時に指定したKeypair)
+- SSH秘密鍵: EC2のKeypairファイルをアップロード(Terraformスクリプトのkey_name=keypairファイル名で指定しているKeypairファイル)
 
 ### 3.事前準備③ AWS EC2用動的インベントリの設定
 
